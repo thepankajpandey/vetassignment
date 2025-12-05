@@ -3,42 +3,36 @@ Veterinary Clinic App
 A clean, modern Android app using MVVM · Clean Architecture · Jetpack Compose · Kotlin Flows · Hilt
 
 <p align="center"> <img src="https://img.shields.io/badge/Android-Compose-brightgreen?logo=android&style=for-the-badge" /> <img src="https://img.shields.io/badge/Kotlin-Coroutines-blueviolet?logo=kotlin&style=for-the-badge" /> <img src="https://img.shields.io/badge/MVVM-Clean%20Architecture-orange?style=for-the-badge" /> <img src="https://img.shields.io/badge/Hilt-DI-blue?logo=dagger&style=for-the-badge" /> <img src="https://img.shields.io/badge/MockK-Testing-green?style=for-the-badge" /> </p>
-📸 App Screenshots
+**📸 App Screenshots**
 
-Replace these with your actual screenshots once taken
 
-![1](https://github.com/user-attachments/assets/97369ef3-3e3d-4e3d-8baf-019074e93363)
-![2](https://github.com/user-attachments/assets/12d82836-ec80-466f-b46a-8d3584bbece0)
-![3](https://github.com/user-attachments/assets/6021c01b-375d-4cee-8cab-b13e02f7db83)
-![4](https://github.com/user-attachments/assets/3fadd4d7-6142-4326-bb46-fcce043c6b24)
-![5](https://github.com/user-attachments/assets/78beb65a-4605-4c45-b223-81c8c7428353)
-![6](https://github.com/user-attachments/assets/e942030e-9d21-4f48-a2c2-fdebd684e8b6)
+![1](https://github.com/user-attachments/assets/97369ef3-3e3d-4e3d-8baf-019074e93363) ![2](https://github.com/user-attachments/assets/12d82836-ec80-466f-b46a-8d3584bbece0) ![3](https://github.com/user-attachments/assets/6021c01b-375d-4cee-8cab-b13e02f7db83) ![4](https://github.com/user-attachments/assets/3fadd4d7-6142-4326-bb46-fcce043c6b24) ![5](https://github.com/user-attachments/assets/78beb65a-4605-4c45-b223-81c8c7428353) ![6](https://github.com/user-attachments/assets/e942030e-9d21-4f48-a2c2-fdebd684e8b6)
 
 
 
 
 
 
-📌 Overview
+**📌 Overview**
 
 This mobile app is built for a small veterinary clinic to help users:
 
-Contact the clinic via Chat or Call
+1.Contact the clinic via Chat or Call
 
-View clinic Working Hours
+2.View clinic Working Hours
 
-Browse Pet information
+3.Browse Pet information
 
-Open pet details via WebView
+4.Open pet details via WebView
 
-Automatically detect if contacting the clinic is allowed based on current time
+5.Automatically detect if contacting the clinic is allowed based on current time
 
-Load data from remote JSON, with fallback to local resources if unavailable
+6.Load data from remote JSON, with fallback to local resources if unavailable
 
 The assignment strictly follows Clean Architecture + MVVM + Jetpack Compose, with no external UI libraries.
 
-🚀 Features
-🟢 Contact Options (Chat & Call)
+**🚀 Features**
+**🟢 Contact Options (Chat & Call)**
 
 Dynamically enabled/disabled based on config.json
 
@@ -46,7 +40,7 @@ Shows correct alert depending on work hours
 ✔ Inside hours → “Thank you for getting in touch…”
 ✔ Outside hours → “Work hours has ended…”
 
-📅 Working Hours Logic
+**📅 Working Hours Logic**
 
 Fully supports formats like:
 "M-F 9:00 - 18:00"
@@ -55,71 +49,59 @@ Automatically reads user’s current day/time
 
 Works across orientations & screen sizes
 
-🐶 Pet Browser
+**🐶 Pet Browser**
 
 Fetches list of pets from remote pets.json
-
 Falls back to local JSON if network fails
-
 Click on a pet → Opens web page in WebView
 
-📡 Network Handling
+**📡 Network Handling**
 
 Manual HTTP using HttpURLConnection
 
 Handles:
-
 2xx success
-
 4xx/5xx failures
-
 Timeouts
-
 No internet
-
 No 3rd-party networking libraries used.
 
-🧰 Local Fallback
+**🧰 Local Fallback**
 
 If remote JSON fails → loads from:
 
 res/raw/config.json
 res/raw/pets.json
 
-🧼 Clean UI
+**🧼 Clean UI**
 
 Jetpack Compose
-
 No extraneous code, print logs, or comments
-
 Constraint-free flexible layout
-
 Eliminates spacing when buttons are disabled
 
-🏛️ Architecture
-📐 Overall Architecture (Clean Architecture + MVVM)
-presentation/
+**🏛️ Architecture
+📐 Overall Architecture (Clean Architecture + MVVM)**
+presentation/main/
 ├── MainScreen.kt
 ├── MainViewModel.kt
-└── components/
+└── UiState
 domain/
-├── models/
-└── repository/
-data/
-├── remote/HttpApiService.kt
-├── local/LocalJsonLoader.kt
 └── repository/VetRepositoryImpl.kt
+data/
+├── models/
+└── remote/HttpApiService.kt
 di/
 └── NetworkModule.kt   (Hilt)
 util/
 └── WorkHoursUtil.kt
 
-🧩 Architecture Diagram
+**🧩 Architecture Diagram**
 <p align="center"> <img src="https://raw.githubusercontent.com/github/explore/main/topics/architecture/architecture.png" width="480" /> </p>
 
 Arrows: data flows downward, UI reacts upward.
 
-🧪 Unit Testing
+**🧪 Unit Testing**
 
 This project includes full test coverage using:
 
@@ -142,7 +124,7 @@ Verifying UiState transitions
 Network fallback testing
 Remote 404 → Local JSON fallback
 
-🛠️ Tech Stack
+**🛠️ Tech Stack**
 Category	Technology
 UI	Jetpack Compose
 Language	Kotlin
@@ -153,7 +135,8 @@ Network	HttpURLConnection (no 3rd-party libs)
 JSON	JSONObject / Manual parsing
 Testing	JUnit4, MockK, Coroutines Test
 Architecture	MVVM + Clean Architecture
-📦 JSON File Formats
+
+**📦 JSON File Formats**
 config.json
 {
 "settings": {
@@ -175,9 +158,9 @@ pets.json
 ]
 }
 
-⚙️ Setup & Installation
+**⚙️ Setup & Installation**
 1️⃣ Clone
-git clone <your-repo-url>
+git clone <https://github.com/thepankajpandey/vetassignment>
 
 2️⃣ Add remote JSON URLs (temporary server)
 
@@ -191,11 +174,6 @@ Inside NetworkModule.kt:
 Open in Android Studio Hedgehog or later
 Run on a device/emulator.
 
-🎨 UI Examples
-
-Add real screenshots later
-
-<p align="center"> <img src="screenshots/contact_buttons.png" width="42%" /> <img src="screenshots/pet_list.png" width="42%" /> </p>
 ⚠️ Assignment Guidelines Complied With
 
 ✔ No 3rd-party UI / networking libraries
