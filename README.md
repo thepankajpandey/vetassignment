@@ -7,7 +7,8 @@ A clean, modern Android app using MVVM · Clean Architecture · Jetpack Compose 
 
 Replace these with your actual screenshots once taken
 
-<p align="center"> <img src="screenshots/home_light.png" width="32%" /> <img src="screenshots/home_dark.png" width="32%" /> <img src="screenshots/pet_detail.png" width="32%" /> </p>
+![1](https://github.com/user-attachments/assets/97369ef3-3e3d-4e3d-8baf-019074e93363)
+
 📌 Overview
 
 This mobile app is built for a small veterinary clinic to help users:
