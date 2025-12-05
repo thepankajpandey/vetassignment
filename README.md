@@ -86,13 +86,17 @@ presentation/main/
 ├── MainScreen.kt
 ├── MainViewModel.kt
 └── UiState
+
 domain/
 └── repository/VetRepositoryImpl.kt
+
 data/
 ├── models/
 └── remote/HttpApiService.kt
+
 di/
 └── NetworkModule.kt   (Hilt)
+
 util/
 └── WorkHoursUtil.kt
 
@@ -106,10 +110,15 @@ Arrows: data flows downward, UI reacts upward.
 This project includes full test coverage using:
 
 Component	Framework
+
 ViewModel	JUnit4 + MockK + coroutines-test
+
 WorkHoursUtil	JUnit4 + MockK (mock LocalDateTime.now)
+
 Repository	MockK
+
 HttpApiService	Fake HTTP + local loader tests
+
 🧪 Example test types
 
 Time-based testing
@@ -126,14 +135,23 @@ Remote 404 → Local JSON fallback
 
 **🛠️ Tech Stack**
 Category	Technology
+
 UI	Jetpack Compose
+
 Language	Kotlin
+
 State	StateFlow + MutableStateFlow
+
 Async	Kotlin Coroutines
+
 Dependency Injection	Hilt
+
 Network	HttpURLConnection (no 3rd-party libs)
+
 JSON	JSONObject / Manual parsing
+
 Testing	JUnit4, MockK, Coroutines Test
+
 Architecture	MVVM + Clean Architecture
 
 **📦 JSON File Formats**
