@@ -52,6 +52,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -63,5 +66,7 @@ dependencies {
     implementation(libs.coroutine.android)
     implementation(libs.androidx.hilt.compose)
     implementation(libs.hilt.android)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
     ksp(libs.hilt.compiler)
 }

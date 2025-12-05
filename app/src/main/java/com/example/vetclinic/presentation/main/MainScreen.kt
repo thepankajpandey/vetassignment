@@ -1,5 +1,6 @@
 package com.example.vetclinic.presentation.main
 
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,7 +31,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.vetclinic.data.model.PetDto
 import com.example.vetclinic.ui.theme.VetClinicTheme
+import com.example.vetclinic.util.WorkHoursUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
@@ -58,66 +59,70 @@ val CallColor = Color(0xFF4CAF50)
 
 @Composable
 fun MainScreen(
-    //navController: NavController,
-    state: UiState,
-    withinHours: Boolean
+    state: UiState
 ) {
-    var showAlert by remember { mutableStateOf<Pair<Boolean, String?>>(false to null) }
-
     Column(modifier = Modifier.fillMaxWidth()) {
 
         CommunicationButtons(
             isChatEnabled = state.isChatEnabled,
-            isCallEnabled = state.isCallEnabled
+            isCallEnabled = state.isCallEnabled,
+            workHours = state.workHours
         )
 
-        Box(
-            modifier = Modifier
-                .padding(8.dp)
-                .border(2.dp, Color.Gray)
-        ) {
-            Text(
-                text = "Office Hours: ${state.workHours}",
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
-                fontWeight = FontWeight.SemiBold
-            )
-        }
+        OfficeHoursCard(state.workHours)
         HorizontalDivider(modifier = Modifier.padding(start = 16.dp, top = 16.dp))
 
         when {
-            state.isLoading -> Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-
-            state.error != null -> Text("Error: ${state.error}")
-            else -> LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(state.pets) { pet ->
-                    PetRow(title = pet.title, imageUrl = pet.image_url) {
-                        val encoded = java.net.URLEncoder.encode(pet.content_url, "utf-8")
-                        val encodedTitle = java.net.URLEncoder.encode(pet.title, "utf-8")
-                        //navigation for webview
-                    }
-
-                    HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                }
-            }
+            state.isLoading -> LoadingView()
+            state.error != null -> ErrorView(state.error)
+            else -> PetsList(state.pets) {}
         }
     }
+}
 
-    if (showAlert.first) {
-        AlertDialog(
-            onDismissRequest = { showAlert = false to null },
-            title = { Text("Message") },
-            text = { Text(showAlert.second ?: "") },
-            confirmButton = {
-                TextButton(onClick = { showAlert = false to null }) { Text("OK") }
-            })
+@Composable
+fun OfficeHoursCard(workHours: String) {
+    Box(
+        modifier = Modifier
+            .padding(16.dp)
+            .border(2.dp, Color.Gray)
+    ) {
+        Text(
+            text = "Office Hours: $workHours",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+}
+
+@Composable
+fun LoadingView() =
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator()
+    }
+
+@Composable
+fun ErrorView(error: String) =
+    Text(
+        text = "Error: $error",
+        color = Color.Red,
+        modifier = Modifier.padding(16.dp)
+    )
+
+@Composable
+fun PetsList(pets: List<PetDto>, onPetClick: (String) -> Unit) {
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        items(pets) { pet ->
+            PetRow(
+                title = pet.title,
+                imageUrl = pet.image_url,
+                onClick = { onPetClick(pet.content_url) }
+            )
+            HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+        }
     }
 }
 
@@ -125,9 +130,21 @@ fun MainScreen(
 fun CommunicationButtons(
     isChatEnabled: Boolean,
     isCallEnabled: Boolean,
-    onChatClick: () -> Unit = {},
-    onCallClick: () -> Unit = {}
+    workHours: String
 ) {
+    val isWithin = WorkHoursUtil.isWithinWorkHours(workHours)
+
+    val dialogMessage = if (isWithin) {
+        "Thank you for getting in touch with us. We’ll get back to you as soon as possible"
+    } else {
+        "Work hours has ended. Please contact us again on the next work day"
+    }
+
+    var showDialog by remember { mutableStateOf(false) }
+    val onButtonClick = {
+        showDialog = true
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -142,7 +159,7 @@ fun CommunicationButtons(
                 modifier,
                 ButtonDefaults.buttonColors(containerColor = ChatColor),
                 "Chat",
-                onChatClick
+                onClick = onButtonClick
             )
         }
 
@@ -155,7 +172,19 @@ fun CommunicationButtons(
                 modifier,
                 ButtonDefaults.buttonColors(containerColor = CallColor),
                 "Call",
-                onCallClick
+                onClick = onButtonClick
+            )
+        }
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                confirmButton = {
+                    Button(onClick = { showDialog = false }) {
+                        Text("OK")
+                    }
+                },
+                title = { Text("Information") },
+                text = { Text(dialogMessage) }
             )
         }
     }
@@ -238,6 +267,20 @@ suspend fun loadBitmap(urlStr: String): android.graphics.Bitmap? {
 }
 
 @Preview(
+    name = "Light Mode, Small Font",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
+    fontScale = 0.85f // Smaller font
+)
+@Preview(
+    name = "Dark Mode, Large Font",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+    fontScale = 1.3f // Larger font
+)
+@Preview(
+    name = "Tablet Landscape",
+    device = "spec:width=1280dp,height=800dp,orientation=landscape",
     showBackground = true
 )
 @Composable
@@ -246,7 +289,7 @@ fun MainScreenPreview() {
         isLoading = false,
         isChatEnabled = true,
         isCallEnabled = true,
-        workHours = "M-F 9:00 - 18:00",
+        workHours = "M-F 09:00 - 18:00",
         pets = listOf(
             PetDto(
                 image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Cat_poster_1.jpg/1200px-Cat_poster_1.jpg",
@@ -277,8 +320,7 @@ fun MainScreenPreview() {
 
     VetClinicTheme {
         MainScreen(
-            state = uiState,
-            withinHours = true
+            state = uiState
         )
     }
 }

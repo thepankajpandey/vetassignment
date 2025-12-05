@@ -1,5 +1,6 @@
 package com.example.vetclinic.di
 
+import android.content.Context
 import com.example.vetclinic.data.remote.HttpApiService
 import com.example.vetclinic.domain.repository.VetRepository
 import com.example.vetclinic.domain.repository.VetRepositoryImpl
@@ -7,6 +8,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
@@ -26,7 +28,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpApiService(): HttpApiService = HttpApiService(CONFIG_URL, PETS_URL)
+    fun provideHttpApiService(@ApplicationContext context: Context): HttpApiService =
+        HttpApiService(context = context, CONFIG_URL, PETS_URL)
 
     @Provides
     fun provideIoDispatcher() = Dispatchers.IO
