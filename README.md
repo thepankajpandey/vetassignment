@@ -8,6 +8,16 @@ A clean, modern Android app using MVVM · Clean Architecture · Jetpack Compose 
 Replace these with your actual screenshots once taken
 
 ![1](https://github.com/user-attachments/assets/97369ef3-3e3d-4e3d-8baf-019074e93363)
+![2](https://github.com/user-attachments/assets/12d82836-ec80-466f-b46a-8d3584bbece0)
+![3](https://github.com/user-attachments/assets/6021c01b-375d-4cee-8cab-b13e02f7db83)
+![4](https://github.com/user-attachments/assets/3fadd4d7-6142-4326-bb46-fcce043c6b24)
+![5](https://github.com/user-attachments/assets/78beb65a-4605-4c45-b223-81c8c7428353)
+![6](https://github.com/user-attachments/assets/e942030e-9d21-4f48-a2c2-fdebd684e8b6)
+
+
+
+
+
 
 📌 Overview
 
